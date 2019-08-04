@@ -25,15 +25,16 @@ defmodule PlateSlateWeb.Schema.Query.MenuItemsTest do
   end
 
   @query """
-  {
-    menuItems(matching: "reu") {
+  query validQuery($term:String!) {
+    menuItems(matching: $term) {
       name
     }
   }
   """
+  @variables %{"term" => "reu"}
   test "menuItems field returns menu items filtered by name" do
     conn = build_conn()
-    conn = get(conn, "/api", query: @query)
+    conn = get(conn, "/api", query: @query, variables: @variables)
 
     assert %{"data" => %{"menuItems" => menu_items}} = json_response(conn, 200)
     assert [%{"name" => "Reuben"}] = menu_items
