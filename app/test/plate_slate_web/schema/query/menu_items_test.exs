@@ -23,4 +23,18 @@ defmodule PlateSlateWeb.Schema.Query.MenuItemsTest do
         %{"name" => "Muffuletta"},
     ], fn item -> item in menu_items end)
   end
+
+  @query """
+  {
+    menuItems(matching: "reu") {
+      name
+    }
+  }
+  """
+  test "menuItems field returns menu items filtered by name" do
+    conn = build_conn()
+    conn = get(conn, "/api", query: @query)
+    assert %{"data" => %{"menuItems" => menu_items}} = json_response(conn, 200)
+    assert [%{"name" => "Reuben"}] = menu_items
+  end
 end
