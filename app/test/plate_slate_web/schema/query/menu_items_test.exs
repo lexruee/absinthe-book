@@ -34,7 +34,23 @@ defmodule PlateSlateWeb.Schema.Query.MenuItemsTest do
   test "menuItems field returns menu items filtered by name" do
     conn = build_conn()
     conn = get(conn, "/api", query: @query)
+
     assert %{"data" => %{"menuItems" => menu_items}} = json_response(conn, 200)
     assert [%{"name" => "Reuben"}] = menu_items
+  end
+
+  @query """
+  {
+    menuItems(machting: 123) {
+      name
+    }
+  }
+  """
+  test "menuItems field returns errors when using a bad value" do
+    conn = build_conn()
+    conn = get(conn, "/api", query: @query)
+
+    assert %{"errors" => [%{"message" => message}]} = json_response(conn, 400)
+    assert message =~ ~r{Unknown argument}
   end
 end
