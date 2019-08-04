@@ -40,17 +40,18 @@ defmodule PlateSlateWeb.Schema.Query.MenuItemsTest do
   end
 
   @query """
-  {
-    menuItems(machting: 123) {
+  query invalidQuery($term: String!) {
+    menuItems(matching: $term) {
       name
     }
   }
   """
+  @variables %{"term" => 123}
   test "menuItems field returns errors when using a bad value" do
     conn = build_conn()
-    conn = get(conn, "/api", query: @query)
+    conn = get(conn, "/api", query: @query, variables: @variables)
 
     assert %{"errors" => [%{"message" => message}]} = json_response(conn, 400)
-    assert message =~ ~r{Unknown argument}
+    assert ~s{Argument "matching" has invalid value $term.} = message
   end
 end
