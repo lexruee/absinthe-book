@@ -12,6 +12,7 @@ defmodule PlateSlateWeb.Schema do
   alias PlateSlate.{Menu, Repo}
 
   query do
+    @desc "List of available items on the menu."
     field :menu_items, list_of(:menu_item) do
       resolve fn _,_,_ ->
         {:ok, Repo.all(Menu.Item)}
@@ -19,9 +20,13 @@ defmodule PlateSlateWeb.Schema do
     end
   end
 
+  @desc "A menu item."
   object :menu_item do
+    @desc "Id of the menu item."
     field :id, :id
+    @desc "Name of the menu item."
     field :name, :string
+    @desc "Description of the menu item."
     field :description, :string
   end
 end
