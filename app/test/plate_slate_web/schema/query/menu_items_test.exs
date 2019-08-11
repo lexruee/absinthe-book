@@ -42,13 +42,13 @@ defmodule PlateSlateWeb.Schema.Query.MenuItemsTest do
   end
 
   @query """
-  query validQuery($term:String!) {
-    menuItems(matching: $term) {
+  query validQuery($filter: MenuItemFilter!) {
+    menuItems(filter: $filter) {
       name
     }
   }
   """
-  @variables %{"term" => "reu"}
+  @variables %{filter: %{"name" => "reu"}}
   test "menuItems field returns menu items filtered by name" do
     conn = build_conn()
     conn = get(conn, "/api", query: @query, variables: @variables)
@@ -58,19 +58,19 @@ defmodule PlateSlateWeb.Schema.Query.MenuItemsTest do
   end
 
   @query """
-  query invalidQuery($term: String!) {
-    menuItems(matching: $term) {
+  query invalidQuery($filter: MenuItemFilter!) {
+    menuItems(filter: $filter) {
       name
     }
   }
   """
-  @variables %{"term" => 123}
+  @variables %{filter: %{"name" => 123}}
   test "menuItems field returns errors when using a bad value" do
     conn = build_conn()
     conn = get(conn, "/api", query: @query, variables: @variables)
 
     assert %{"errors" => [%{"message" => message}]} = json_response(conn, 400)
-    assert ~s{Argument "matching" has invalid value $term.} = message
+    assert message =~ ~s{Argument "filter" has invalid value $filter.}
   end
 
   @query """
