@@ -1,14 +1,14 @@
 # absinthe-book
 
-Personal git repo for working through the book "Craft GraphQL APIs in Elixir with Absinthe" by Pragmmatic Programmers.
+Personal git repo for working through the book "Craft GraphQL APIs in Elixir with Absinthe" by Pragmatic Programmers.
 
 Finished Chapters:
 
- * Introduction
+ * Introduction ✓
  * Part 1 
    * Meet GraphQL ✓
    * Building a Schema ✓
    * Taking User Input ✓
    * Adding Flexibility
-   * Making a Change Mutations
+   * Making a Change with Mutations
    * Going Live with Subscriptions
