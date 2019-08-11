@@ -1,5 +1,6 @@
 defmodule PlateSlateWeb.Schema.Query.MenuItemsTest do
   use PlateSlateWeb.ConnCase, async: true
+  require IEx
 
   setup do
     PlateSlate.Seeds.run()
@@ -119,5 +120,22 @@ defmodule PlateSlateWeb.Schema.Query.MenuItemsTest do
     menu_items = Enum.sort(@menu_items, &(&1 >= &2))
     response_data = %{"data" => %{"menuItems" => menu_items }}
     assert json_response(conn, 200) == response_data
+  end
+
+  @query """
+  query ($id: ID) {
+    menuItem(id: $id) {
+      id
+      name
+    }
+  }
+  """
+  test "menuItem field returns a menu item" do
+    query = "query { menuItems { id name } }"
+    conn = get(build_conn(), "/api", query: query)
+    assert %{"data" => %{"menuItems" => [first_menu_item = %{"id" => first_menu_item_id} | _menu_items]}} = json_response(conn, 200)
+
+    conn = get(build_conn(), "/api", query: @query, variables: %{id: first_menu_item_id})
+    assert %{"data" => %{"menuItem" => first_menu_item}} = json_response(conn, 200)
   end
 end

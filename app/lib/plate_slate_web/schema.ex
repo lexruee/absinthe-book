@@ -18,6 +18,12 @@ defmodule PlateSlateWeb.Schema do
       arg :order, type: :sort_order, default_value: :asc
       resolve &Resolvers.Menu.menu_items/3
     end
+
+    @desc "Retutns a menu item with the given id."
+    field :menu_item, :menu_item do
+      arg :id, :id
+      resolve &Resolvers.Menu.menu_item/3
+    end
   end
 
   enum :sort_order do
