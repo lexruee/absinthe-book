@@ -9,7 +9,6 @@
 defmodule PlateSlateWeb.Schema do
   use Absinthe.Schema
 
-  alias PlateSlate.Repo
   alias PlateSlateWeb.Resolvers
 
   query do
