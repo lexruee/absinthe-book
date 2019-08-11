@@ -19,7 +19,7 @@ defmodule PlateSlateWeb.Schema do
       resolve &Resolvers.Menu.menu_items/3
     end
 
-    @desc "Retutns a menu item with the given id."
+    @desc "Returns a menu item with the given id."
     field :menu_item, :menu_item do
       arg :id, :id
       resolve &Resolvers.Menu.menu_item/3
