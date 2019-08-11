@@ -74,6 +74,21 @@ defmodule PlateSlateWeb.Schema.Query.MenuItemsTest do
   end
 
   @query """
+  query filteredQuery($filter: MenuItemFilter!) {
+    menuItems(filter: $filter) {
+      name
+    }
+  }
+  """
+  @variables %{filter: %{category: "Sandwiches", tag: "Vegetarian"}}
+  test "menuItems field returns menuItems, filtering by category and tag" do
+    response = get(build_conn(), "/api", query: @query, variables: @variables)
+    assert %{
+      "data" => %{"menuItems" => [%{"name" => "Vada Pav"}]}
+    } == json_response(response, 200)
+  end
+
+  @query """
   query orderedQuery($order: SortOrder) {
     menuItems(order: $order) {
       name
