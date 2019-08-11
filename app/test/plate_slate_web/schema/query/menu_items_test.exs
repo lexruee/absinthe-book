@@ -5,6 +5,23 @@ defmodule PlateSlateWeb.Schema.Query.MenuItemsTest do
     PlateSlate.Seeds.run()
   end
 
+  @menu_items [
+    %{"name" => "Bánh mì"},
+    %{"name" => "Chocolate Milkshake"},
+    %{"name" => "Croque Monsieur"},
+    %{"name" => "French Fries"},
+    %{"name" => "Lemonade"},
+    %{"name" => "Masala Chai"},
+    %{"name" => "Muffuletta"},
+    %{"name" => "Papadum"},
+    %{"name" => "Pasta Salad"},
+    %{"name" => "Reuben"},
+    %{"name" => "Soft Drink"},
+    %{"name" => "Vada Pav"},
+    %{"name" => "Vanilla Milkshake"},
+    %{"name" => "Water"},
+  ]
+
   @query """
   {
     menuItems {
@@ -54,5 +71,38 @@ defmodule PlateSlateWeb.Schema.Query.MenuItemsTest do
 
     assert %{"errors" => [%{"message" => message}]} = json_response(conn, 400)
     assert ~s{Argument "matching" has invalid value $term.} = message
+  end
+
+  @query """
+  query orderedQuery($order: SortOrder) {
+    menuItems(order: $order) {
+      name
+    }
+  }
+  """
+  @variables %{order: "ASC"}
+  test "menuItems field returns menu items ordered by ascending name" do
+    conn = build_conn()
+    conn = get(conn, "/api", query: @query, variables: @variables)
+
+    response_data = %{"data" => %{"menuItems" => @menu_items}}
+    assert json_response(conn, 200) == response_data
+  end
+
+  @query """
+  query orderedQuery($order: SortOrder) {
+    menuItems(order: $order) {
+      name
+    }
+  }
+  """
+  @variables %{order: "DESC"}
+  test "menuItems field returns items ordered by descending name" do
+    conn = build_conn()
+    conn = get(conn, "/api", query: @query, variables: @variables)
+
+    menu_items = Enum.sort(@menu_items, &(&1 >= &2))
+    response_data = %{"data" => %{"menuItems" => menu_items }}
+    assert json_response(conn, 200) == response_data
   end
 end
