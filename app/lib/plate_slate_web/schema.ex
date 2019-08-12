@@ -14,13 +14,20 @@ defmodule PlateSlateWeb.Schema do
   import_types __MODULE__.MenuTypes
 
   query do
+    import_fields :menu_query
+    import_fields :menu_queries
+  end
+
+  object :menu_queries do
     @desc "List of available items on the menu."
     field :menu_items, list_of(:menu_item) do
       arg :filter, :menu_item_filter
       arg :order, type: :sort_order, default_value: :asc
       resolve &Resolvers.Menu.menu_items/3
     end
+  end
 
+  object :menu_query do
     @desc "Returns a menu item with the given id."
     field :menu_item, :menu_item do
       arg :id, :id
