@@ -29,6 +29,8 @@ defmodule PlateSlateWeb.Schema.MenuTypes do
 
   @desc "A menu item."
   object :menu_item do
+    interfaces [:search_result]
+
     @desc "Id of the menu item."
     field :id, :id
 
@@ -47,6 +49,8 @@ defmodule PlateSlateWeb.Schema.MenuTypes do
 
   @desc "A category."
   object :category do
+    interfaces [:search_result]
+
     @desc "Category name"
     field :name, :string
 
@@ -59,8 +63,8 @@ defmodule PlateSlateWeb.Schema.MenuTypes do
     end
   end
 
-  union :search_result do
-    types [:menu_item, :category]
+  interface :search_result do
+    field :name, :string
 
     resolve_type fn
       %PlateSlate.Menu.Item{}, _ ->  :menu_item
