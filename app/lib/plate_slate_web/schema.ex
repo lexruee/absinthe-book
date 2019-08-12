@@ -16,6 +16,11 @@ defmodule PlateSlateWeb.Schema do
   query do
     import_fields :menu_query
     import_fields :menu_queries
+
+    field :search, list_of(:search_result) do
+      arg :matching, non_null(:string)
+      resolve &Resolvers.Menu.search/3
+    end
   end
 
   object :menu_queries do

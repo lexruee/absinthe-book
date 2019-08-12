@@ -1,6 +1,8 @@
 defmodule PlateSlateWeb.Schema.MenuTypes do
   use Absinthe.Schema.Notation
 
+  alias PlateSlateWeb.Resolvers
+
   @desc "Filtering options for the menu item list"
   input_object :menu_item_filter do
     @desc "Matching a name"
@@ -41,5 +43,29 @@ defmodule PlateSlateWeb.Schema.MenuTypes do
 
     @desc "Date when the menu item was added."
     field :added_on, :date
+  end
+
+  @desc "A category."
+  object :category do
+    @desc "Category name"
+    field :name, :string
+
+    @desc "Category description"
+    field :description, :string
+
+    @desc "Category items"
+    field :items, list_of(:menu_item) do
+      resolve &Resolvers.Menu.items_for_category/3
+    end
+  end
+
+  union :search_result do
+    types [:menu_item, :category]
+
+    resolve_type fn
+      %PlateSlate.Menu.Item{}, _ ->  :menu_item
+      %PlateSlate.Menu.Category{}, _ -> :category
+      _, _ -> nil
+    end
   end
 end
