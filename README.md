@@ -9,6 +9,6 @@ Finished Chapters:
    * Meet GraphQL ✓
    * Building a Schema ✓
    * Taking User Input ✓
-   * Adding Flexibility
+   * Adding Flexibility ✓
    * Making a Change with Mutations
    * Going Live with Subscriptions
