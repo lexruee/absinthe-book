@@ -10,5 +10,5 @@ Finished Chapters:
    * Building a Schema ✓
    * Taking User Input ✓
    * Adding Flexibility ✓
-   * Making a Change with Mutations
+   * Making a Change with Mutations ✓
    * Going Live with Subscriptions
