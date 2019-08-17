@@ -24,6 +24,16 @@ defmodule PlateSlateWeb.Resolvers.Menu do
     end)
   end
 
+  def update_menu_item(_, %{id: id, input: params}, _) do
+    menu_item = Menu.get_item!(%{id: id})
+    case Menu.update_item(menu_item, params) do
+      {:error, changeset} ->
+        {:ok, %{errors: transform_errors(changeset)}}
+      {:ok, menu_item} ->
+        {:ok, %{menu_item: menu_item}}
+    end
+  end
+
   def menu_items(_, args, _) do
     {:ok, Menu.list_items(args)}
   end

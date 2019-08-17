@@ -28,6 +28,11 @@ defmodule PlateSlateWeb.Schema do
       arg :input, non_null(:menu_item_input)
       resolve &Resolvers.Menu.create_menu_item/3
     end
+    field :update_menu_item, :menu_item_result do
+      arg :id, :id
+      arg :input, non_null(:menu_item_input)
+      resolve &Resolvers.Menu.update_menu_item/3
+    end
   end
 
   object :menu_queries do

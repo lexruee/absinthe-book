@@ -34,6 +34,9 @@ defmodule PlateSlateWeb.Schema.MenuTypes do
     @desc "Id of the menu item."
     field :id, :id
 
+    @desc "Category Id"
+    field :category_id, :id
+
     @desc "Name of the menu item."
     field :name, :string
 
