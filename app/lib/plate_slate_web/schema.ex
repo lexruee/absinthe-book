@@ -24,7 +24,7 @@ defmodule PlateSlateWeb.Schema do
   end
 
   mutation do
-    field :create_menu_item, :menu_item do
+    field :create_menu_item, :menu_item_result do
       arg :input, non_null(:menu_item_input)
       resolve &Resolvers.Menu.create_menu_item/3
     end

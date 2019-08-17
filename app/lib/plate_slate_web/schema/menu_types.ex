@@ -47,6 +47,18 @@ defmodule PlateSlateWeb.Schema.MenuTypes do
     field :added_on, :date
   end
 
+  @desc "A menu item result."
+  object :menu_item_result do
+    field :menu_item, :menu_item
+    field :errors, list_of(:input_error)
+  end
+
+  @desc "An error encountered trying to persist input"
+  object :input_error do
+    field :key, non_null(:string)
+    field :message, non_null(:string)
+  end
+
   @desc "A category."
   object :category do
     interfaces [:search_result]
