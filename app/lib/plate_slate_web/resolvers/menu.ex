@@ -1,6 +1,13 @@
 defmodule PlateSlateWeb.Resolvers.Menu do
   alias PlateSlate.Menu
 
+  def create_menu_item(_, %{input: params}, _) do
+    case Menu.create_item(params) do
+      {:error, _} -> {:error, "Could not create menu item"}
+      {:ok, _} = success -> success
+    end
+  end
+
   def menu_items(_, args, _) do
     {:ok, Menu.list_items(args)}
   end

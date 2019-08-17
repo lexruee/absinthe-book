@@ -41,7 +41,7 @@ defmodule PlateSlateWeb.Schema.MenuTypes do
     field :description, :string
 
     @desc "Price of the menu item."
-    field :price, :float
+    field :price, :decimal
 
     @desc "Date when the menu item was added."
     field :added_on, :date
@@ -63,6 +63,22 @@ defmodule PlateSlateWeb.Schema.MenuTypes do
     end
   end
 
+  @desc "Menu Item input data"
+  input_object :menu_item_input do
+    @desc "Name"
+    field :name, non_null(:string)
+
+    @desc "Description"
+    field :description, :string
+
+    @desc "Price"
+    field :price, non_null(:decimal)
+
+    @desc "Category Id"
+    field :category_id, non_null(:id)
+  end
+
+  @desc "A search result."
   interface :search_result do
     field :name, :string
 
@@ -70,6 +86,32 @@ defmodule PlateSlateWeb.Schema.MenuTypes do
       %PlateSlate.Menu.Item{}, _ ->  :menu_item
       %PlateSlate.Menu.Category{}, _ -> :category
       _, _ -> nil
+    end
+  end
+
+  scalar :decimal do
+    parse fn
+      %{value: value}, _ when is_binary(value) -> Decimal.parse(value)
+      %{value: value}, _ when is_float(value) -> Decimal.parse(value |> Float.to_string)
+      %{value: value}, _ when is_integer(value) -> Decimal.parse(value |> Integer.to_string)
+      _, _ -> :error
+    end
+
+    serialize &to_string/1
+  end
+
+  scalar :date do
+    parse fn input ->
+      with %Absinthe.Blueprint.Input.String{value: value} <- input,
+           {:ok, date} <- Date.from_iso8601(input.value) do
+        {:ok, date}
+      else
+        _ -> :error
+      end
+    end
+
+    serialize fn date ->
+      Date.to_iso8601(date)
     end
   end
 end

@@ -23,6 +23,13 @@ defmodule PlateSlateWeb.Schema do
     end
   end
 
+  mutation do
+    field :create_menu_item, :menu_item do
+      arg :input, non_null(:menu_item_input)
+      resolve &Resolvers.Menu.create_menu_item/3
+    end
+  end
+
   object :menu_queries do
     @desc "List of available items on the menu."
     field :menu_items, list_of(:menu_item) do
@@ -43,20 +50,5 @@ defmodule PlateSlateWeb.Schema do
   enum :sort_order do
     value :asc
     value :desc
-  end
-
-  scalar :date do
-    parse fn input ->
-      with %Absinthe.Blueprint.Input.String{value: value} <- input,
-           {:ok, date} <- Date.from_iso8601(input.value) do
-        {:ok, date}
-      else
-        _ -> :error
-      end
-    end
-
-    serialize fn date ->
-      Date.to_iso8601(date)
-    end
   end
 end
