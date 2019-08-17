@@ -3,9 +3,15 @@ defmodule PlateSlateWeb.Resolvers.Menu do
 
   def create_menu_item(_, %{input: params}, _) do
     case Menu.create_item(params) do
-      {:error, _} -> {:error, "Could not create menu item"}
-      {:ok, _} = success -> success
+      {:error, changeset} ->
+        {:error, message: "Could not create menu item", details: error_details(changeset)}
+      {:ok, _} = success ->
+        success
     end
+  end
+  defp error_details(changeset) do
+    changeset
+    |> Ecto.Changeset.traverse_errors(fn {msg, _} -> msg end)
   end
 
   def menu_items(_, args, _) do
