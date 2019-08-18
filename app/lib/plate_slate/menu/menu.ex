@@ -171,6 +171,7 @@ defmodule PlateSlate.Menu do
 
   """
   def get_item!(%{id: id}), do: Repo.get(Item, id |> String.to_integer)
+  def get_item!(id), do: Repo.get(Item, id)
 
   @doc """
   Creates a item.
