@@ -40,6 +40,14 @@ defmodule PlateSlateWeb.Schema do
     end
   end
 
+  subscription do
+    field :new_order, :order do
+      config fn _args, _info ->
+        {:ok, topic: "*"}
+      end
+    end
+  end
+
   object :menu_queries do
     @desc "List of available items on the menu."
     field :menu_items, list_of(:menu_item) do
